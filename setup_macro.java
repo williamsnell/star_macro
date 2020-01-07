@@ -261,24 +261,25 @@ PhysicsContinuum physicsContinuum_0 =
                     OutletBoundary outletBoundary_0 = 
                         ((OutletBoundary) simulation_0.get(ConditionTypeManager.class).get(OutletBoundary.class));
                     boundary_0.setBoundaryType(outletBoundary_0); 
-                    break;
+                    break;        
                 case "symmetry":
                     SymmetryBoundary symmetryBoundary_0 = 
                         ((SymmetryBoundary) simulation_0.get(ConditionTypeManager.class).get(SymmetryBoundary.class));
                     boundary_0.setBoundaryType(symmetryBoundary_0);    
                     break;
                 //Set wheels as moving walls with rotational reference frames
-                //All wheels reference the same setup, but with properties as
+                //All wheels reference the same setup, but with properties asoundary) simulation_0.get(ConditionTypeManager.class).get(OutletBoundary.class));
+
                 //defined by the config xml.
                 case "fl":
                 case "fr":
                 case "rl":
-                case "rr":
-                    //initialise boundary
+                case "rr":          //initialise boundary
                     boundary_0.getConditions().get(WallSlidingOption.class).setSelected(WallSlidingOption.Type.LOCAL_ROTATION_RATE);
                     WallRelativeRotationProfile wallRelativeRotationProfile_0 = 
                         boundary_0.getValues().get(WallRelativeRotationProfile.class);
-                    
+                  
+            
                     //Angular Velocity
                     
                     //evaluate xml path
@@ -491,6 +492,7 @@ PhysicsContinuum physicsContinuum_0 =
     autoMeshOperation_0.getDefaultValues().get(BaseSize.class).setUnits(units_0);
 
     autoMeshOperation_0.getDefaultValues().get(BaseSize.class).setValue(base_Size);
+    
 
     PartsMinimumSurfaceSize partsMinimumSurfaceSize_0 = 
       autoMeshOperation_0.getDefaultValues().get(PartsMinimumSurfaceSize.class);
@@ -531,6 +533,9 @@ PhysicsContinuum physicsContinuum_0 =
     surfaceCustomMeshControl_0.setApplyOnlyToContact(true);
 
     surfaceCustomMeshControl_0.getGeometryObjects().setQuery(null);
+    //Set meshing to parallel
+    autoMeshOperation_0.getMesherParallelModeOption().setSelected(MesherParallelModeOption.Type.PARALLEL);
+    
     //Surface Control
     //Get every surface with domain prefix
     for (Iterator<PartSurface> it = mySurfaces.iterator(); it.hasNext();) {

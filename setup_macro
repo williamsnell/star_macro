@@ -1,4 +1,4 @@
-// STAR-CCM+ macro: test_macro.java
+// STAR-CCM+ macro: setup_macro.java
 // William Snell - last edited 2/01/2020
 package macro;
 
@@ -43,7 +43,7 @@ import star.prismmesher.*;
 import star.vis.*;
 import star.trimmer.*;
 
-public class test_macro2 extends StarMacro {
+public class setup_macro extends StarMacro {
 
   public void execute() {
     execute0(); //Set Up simulation

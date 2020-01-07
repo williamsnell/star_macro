@@ -1,0 +1,42 @@
+// STAR-CCM+ macro: test_macro.java
+// William Snell - last edited 2/01/2020
+package macro;
+
+import java.util.*;
+
+import star.common.*;
+import star.base.neo.*;
+import star.vis.*;
+import star.flow.*;
+import star.meshing.*;
+
+public class post_macro extends StarMacro {
+
+  public void execute() {
+    execute0(); //Set Up simulation
+
+    execute1(); //Get active simulation
+    
+  }
+
+  private void execute0() {
+
+//------------------------Initialise Simulation---------------------------------
+    Simulation simulation_0 = 
+      getActiveSimulation();
+
+    simulation_0.getSceneManager().createScalarScene("Scalar Scene", "Outline", "Scalar");
+
+    Scene scene_0 = 
+      simulation_0.getSceneManager().getScene("Scalar Scene");
+
+    scene_0.initializeAndWait();
+    
+}
+private void execute1() {
+
+  Simulation simulation_0 = 
+    getActiveSimulation();
+
+}
+}

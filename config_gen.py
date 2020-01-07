@@ -44,16 +44,30 @@ def addSettings(part):
 # Define the properties for a part (e.g. front-left wheel)
 fl = {
     "NAME": "flwheel",
-    "ang_vel": 2.33,
-    "vec0": (0.0, 1.0, 2.0),
-    "vec1": (1.0, 2.0, 3.0),
+    "ang_vel": 16.66/0.4064,
+    "vec0": (0.0, 0.1995, 1.55)
+    "vec1": (1.0, 0., 0.),
+}
+
+fr = {
+    "NAME": "rlwheel",
+    "ang_vel": 16.66/0.4064,
+    "vec0": (0.0, 0.1995, 1.55), #origin vector
+    "vec1": (1.0, 0., 0.), # axis vector
 }
 
 rl = {
     "NAME": "rlwheel",
-    "ang_vel": 1.22,
-    "vec0": (0.0, 2.0, 3.0),
-    "vec1": (1.0, 2.0, 3.0),
+    "ang_vel": 16.66/.4064,
+    "vec0": (0.0, 0.1995, 0),
+    "vec1": (1.0, 0., 0.),
+}
+
+rr = {
+    "NAME": "rlwheel",
+    "ang_vel": 16.66/0.4064,
+    "vec0": (0.0, 0.1995, 0),
+    "vec1": (1.0, 0., 0.),
 }
 
 floor = {
@@ -70,13 +84,15 @@ inlet = {
 
 addPart(fl)
 addPart(rl)
+addPart(rr)
+addPart(fr)
 addPart(floor)
 addPart(inlet)
 
 # Mesh settings
 mesh = {
     "NAME": "mesh",
-    "Base_Size": 8.0,  # mm
+    "Base_Size": 100.,  # mm
     "No_Prism": 2,
     "Prism_Total_Thickness": 66.66,  # %
     "Max_Cell_Size": 37500,  # %

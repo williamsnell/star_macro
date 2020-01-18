@@ -3,6 +3,7 @@
 package macro;
 
 import java.util.*;
+import java.nio.file.*;
 
 import star.common.*;
 import star.base.neo.*;
@@ -115,7 +116,7 @@ public class post_macro extends StarMacro {
 
     coordinate_0.setValue(new DoubleVector(new double[] {0, 0.0, 0.0}));
 
-    coordinate_0.setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[] {0, 0.0, 0.0}));
+    coordinate_0.setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[] {0, 0.0, -0.4}));
 
     coordinate_0.setCoordinateSystem(labCoordinateSystem_0);
 
@@ -138,6 +139,11 @@ public class post_macro extends StarMacro {
     planeSection_1.getInputParts().setObjects(region_0);
     
     planeSection_1.setValueMode(ValueMode.SINGLE);
+    
+    SingleValue singleValue_1 = 
+                planeSection_1.getSingleValue();
+    
+    singleValue_1.setValue(-0.3);
     
     scalarDisplayer_1.getVisibleParts().addParts(planeSection_1);
     
@@ -229,24 +235,45 @@ public class post_macro extends StarMacro {
             }
     
 //-----------------------------Plane Sweep--------------------------------------
-    scalarDisplayer_0.getScalarDisplayQuantity().setFieldFunction(primitiveFieldFunction_0); // set field function on surface to pressure
 
-    for (Iterator<Object> it = functions.iterator(); it.hasNext();){
-        scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction((FieldFunction)it.next());
-       
-    }
+
+    scalarDisplayer_0.getScalarDisplayQuantity().setFieldFunction(primitiveFieldFunction_0); // set field function on surface to pressure
+    //loop through field functions. As the different field functions have different types
+    //I couldn't find a better way to do it then this abomination :(
+    
+    for (Integer i = 0; i < 3; i++){
+        String name = "";
+        if (i == 0){
+            scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction(primitiveFieldFunction_0);
+            name = "Pressure";            
+        } else if (i == 1){
+            scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction(totalPressureCoefficientFunction_0);
+            name = "TotalPressureCoeff";
+        } else if (i == 2){
+            scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction(vectorMagnitudeFieldFunction_0);
+            name = "VelocityMagnitude";
+        }
+        //create folder structure
+        try {   
+            Files.createDirectory(Paths.get("/output/"+name));
+            Files.createDirectory(Paths.get("/output/"+name+"/sweep/top"));
+            Files.createDirectory(Paths.get("/output/"+name+"/sweep/front"));
+        } catch (Exception e) {
+            simulation_0.println("Couldn't create directory.");
+        };
+         
         
-        scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction(primitiveFieldFunction_0);
+        //scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction(primitiveFieldFunction_0);
         
         //ISO
         scene_0.setViewOrientation(new DoubleVector(new double[] {1.0, 1.0, 1.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\Velocity\\ISO.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\ISO.png"), 1, 4096, 4096, true, true);
         //Front
         scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 0.0, 1.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\Velocity\\Front.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Front.png"), 1, 4096, 4096, true, true);
         //Top
         scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 1.0, 0.0}), new DoubleVector(new double[] {1.0, 0.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\Velocity\\Top.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Top.png"), 1, 4096, 4096, true, true);
         //Side
             //Move plane to side view
         coordinate_3.setValue(new DoubleVector(new double[] {1.0, 0.0, 0.0}));
@@ -254,26 +281,45 @@ public class post_macro extends StarMacro {
         coordinate_3.setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[] {1.0, 0.0, 0.0}));
             
         scene_0.setViewOrientation(new DoubleVector(new double[] {1.0, 0.0, 0.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\Velocity\\Side.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Side.png"), 1, 4096, 4096, true, true);
             //Move plane back
         coordinate_3.setValue(new DoubleVector(new double[] {0.0, 1.0, 0.0}));
 
         coordinate_3.setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[] {0.0, 1.0, 0.0}));
         
-        for (Integer i = 0; i < 13; i++){
-            
-            
-            
+        //Top Sweep
+        scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 1.0, 0.0}), new DoubleVector(new double[] {1.0, 0.0, 0.0}));
+        for (Integer j = 0; j < 13; j++){
+                                  
             SingleValue singleValue_0 = 
                 planeSection_0.getSingleValue();
 
-            singleValue_0.getValueQuantity().setValue(0.0);
+            singleValue_0.getValueQuantity().setValue(j*0.1+0.05);
 
             singleValue_0.getValueQuantity().setUnits(units_0);
+            
+            //Top
+            scene_0.printAndWait(resolvePath("\\output\\"+name+"\\sweep\\top\\Top" + Integer.toString(j) +".png"), 1, 4096, 4096, true, true);
+            
        
         }
+        SingleValue singleValue_0 = 
+                planeSection_0.getSingleValue();        
+        //Set to front view
+        scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 0.0, 1.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
+        singleValue_0.getValueQuantity().setValue(0.0);
         
-   //}
+        for (Integer h = 0; h < 15; h++){  
+            
+            singleValue_1.setValue(-0.3+h*0.2);
+            //Front
+            scene_0.printAndWait(resolvePath("\\output\\"+name+"\\sweep\\front\\Front" + Integer.toString(h) +".png"), 1, 4096, 4096, true, true);
+        }
+        singleValue_1.setValue(-0.3);
+        
+        
+    }       
+   
     
     
 }

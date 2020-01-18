@@ -21,6 +21,9 @@ public class post_macro extends StarMacro {
   }
 
   private void execute0() {
+      
+      //Resolution (res x res) pixels
+      Integer res = 4096;
 
 //------------------------Initialise Simulation---------------------------------
     Simulation simulation_0 = 
@@ -242,6 +245,7 @@ public class post_macro extends StarMacro {
     //I couldn't find a better way to do it then this abomination :(
     
     for (Integer i = 0; i < 3; i++){
+        scalarDisplayer_0.setVisibilityOverrideMode(DisplayerVisibilityOverride.USE_PART_PROPERTY);
         String name = "";
         if (i == 0){
             scalarDisplayer_1.getScalarDisplayQuantity().setFieldFunction(primitiveFieldFunction_0);
@@ -267,13 +271,13 @@ public class post_macro extends StarMacro {
         
         //ISO
         scene_0.setViewOrientation(new DoubleVector(new double[] {1.0, 1.0, 1.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\ISO.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\ISO.png"), 1, res, res, true, true);
         //Front
         scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 0.0, 1.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Front.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Front.png"), 1, res, res, true, true);
         //Top
         scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 1.0, 0.0}), new DoubleVector(new double[] {1.0, 0.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Top.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Top.png"), 1, res, res, true, true);
         //Side
             //Move plane to side view
         coordinate_3.setValue(new DoubleVector(new double[] {1.0, 0.0, 0.0}));
@@ -281,13 +285,14 @@ public class post_macro extends StarMacro {
         coordinate_3.setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[] {1.0, 0.0, 0.0}));
             
         scene_0.setViewOrientation(new DoubleVector(new double[] {1.0, 0.0, 0.0}), new DoubleVector(new double[] {0.0, 1.0, 0.0}));
-        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Side.png"), 1, 4096, 4096, true, true);
+        scene_0.printAndWait(resolvePath("\\output\\"+name+"\\Side.png"), 1, res, res, true, true);
             //Move plane back
         coordinate_3.setValue(new DoubleVector(new double[] {0.0, 1.0, 0.0}));
 
         coordinate_3.setCoordinate(units_0, units_0, units_0, new DoubleVector(new double[] {0.0, 1.0, 0.0}));
         
         //Top Sweep
+        scalarDisplayer_0.setVisibilityOverrideMode(DisplayerVisibilityOverride.HIDE_ALL_PARTS);   
         scene_0.setViewOrientation(new DoubleVector(new double[] {0.0, 1.0, 0.0}), new DoubleVector(new double[] {1.0, 0.0, 0.0}));
         for (Integer j = 0; j < 13; j++){
                                   
@@ -299,7 +304,7 @@ public class post_macro extends StarMacro {
             singleValue_0.getValueQuantity().setUnits(units_0);
             
             //Top
-            scene_0.printAndWait(resolvePath("\\output\\"+name+"\\sweep\\top\\Top" + Integer.toString(j) +".png"), 1, 4096, 4096, true, true);
+            scene_0.printAndWait(resolvePath("\\output\\"+name+"\\sweep\\top\\Top" + Integer.toString(j) +".png"), 1, res, res, true, true);
             
        
         }
@@ -313,7 +318,7 @@ public class post_macro extends StarMacro {
             
             singleValue_1.setValue(-0.3+h*0.2);
             //Front
-            scene_0.printAndWait(resolvePath("\\output\\"+name+"\\sweep\\front\\Front" + Integer.toString(h) +".png"), 1, 4096, 4096, true, true);
+            scene_0.printAndWait(resolvePath("\\output\\"+name+"\\sweep\\front\\Front" + Integer.toString(h) +".png"), 1, res, res, true, true);
         }
         singleValue_1.setValue(-0.3);
         

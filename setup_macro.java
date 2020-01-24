@@ -621,6 +621,9 @@ PhysicsContinuum physicsContinuum_0 =
     
     simulation_0.getSimulationIterator().runAutomation();
     
+  //save reports to file
+  new StarScript(getActiveSimulation(), new java.io.File(resolvePath("Report_to_CSV.java"))).play(); 
+    
     
     
 }

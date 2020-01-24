@@ -78,16 +78,16 @@ public class setup_macro extends StarMacro {
     CadPart cadPart_0 = 
       ((CadPart) simulation_0.get(SimulationPartManager.class).getPart("domain"));     
       
-    //Import car as a composite part (groups bodies together)
+    //Import car as a composite part (groups bodies together)       
+    
+    try {
+        CompositePart carPart_0 = 
+            ((CompositePart) simulation_0.get(SimulationPartManager.class).getPart("car"));
+         //Perform boolean subtract operation
 
-    CompositePart compositePart_0 = 
-      ((CompositePart) simulation_0.get(SimulationPartManager.class).getPart("car"));
-
-
-    //Perform boolean subtract operation
-
+    //Ugly code duplication necessary as carPart may be a different type depending on part
     SubtractPartsOperation subtractPartsOperation_0 = 
-      (SubtractPartsOperation) simulation_0.get(MeshOperationManager.class).createSubtractPartsOperation(new NeoObjectVector(new Object[] {compositePart_0, cadPart_0}));
+      (SubtractPartsOperation) simulation_0.get(MeshOperationManager.class).createSubtractPartsOperation(new NeoObjectVector(new Object[] {carPart_0, cadPart_0}));
 
     subtractPartsOperation_0.getTargetPartManager().setQuery(null);
 
@@ -96,6 +96,24 @@ public class setup_macro extends StarMacro {
     subtractPartsOperation_0.setPerformCADBoolean(false);
 
     subtractPartsOperation_0.execute();
+    } catch (Exception e){
+        CadPart carPart_0 =
+                ((CadPart) simulation_0.get(SimulationPartManager.class).getPart("car")); //in case the part only has one body
+         //Perform boolean subtract operation
+
+    SubtractPartsOperation subtractPartsOperation_0 = 
+      (SubtractPartsOperation) simulation_0.get(MeshOperationManager.class).createSubtractPartsOperation(new NeoObjectVector(new Object[] {carPart_0, cadPart_0}));
+
+    subtractPartsOperation_0.getTargetPartManager().setQuery(null);
+
+    subtractPartsOperation_0.getTargetPartManager().setObjects(cadPart_0);
+
+    subtractPartsOperation_0.setPerformCADBoolean(false);
+
+    subtractPartsOperation_0.execute();
+    }
+
+   
 
     //Assign subtract part to new region
     
